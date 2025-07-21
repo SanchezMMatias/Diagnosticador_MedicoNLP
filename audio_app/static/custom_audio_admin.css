@@ -1,0 +1,318 @@
+/* Estilos personalizados para AudioMedico Admin */
+
+/* Mejoras generales para el admin */
+.change-list table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.change-list table th,
+.change-list table td {
+    border-bottom: 1px solid #e9ecef;
+    padding: 12px 8px;
+    vertical-align: middle;
+}
+
+/* Estilos para los badges de estado */
+.estado-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    text-align: center;
+    min-width: 80px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.estado-pendiente {
+    background: linear-gradient(135deg, #ffc107, #e0a800);
+}
+
+.estado-procesando {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    animation: pulse 2s infinite;
+}
+
+.estado-completado {
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+}
+
+.estado-error {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Estilos para el reproductor de audio */
+.audio-player-container {
+    position: relative;
+    margin: 5px 0;
+}
+
+.audio-player-container audio {
+    width: 200px;
+    height: 32px;
+    outline: none;
+    border-radius: 16px;
+    background: #f8f9fa;
+}
+
+.audio-player-container audio::-webkit-media-controls-panel {
+    background-color: #f8f9fa;
+    border-radius: 16px;
+}
+
+.audio-player-container audio::-webkit-media-controls-play-button {
+    background-color: #007bff;
+    border-radius: 50%;
+}
+
+/* Mejoras para la información del audio en el formulario */
+.audio-info-card {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.audio-info-title {
+    color: #495057;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.audio-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    font-size: 13px;
+}
+
+.audio-info-item {
+    background: white;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border-left: 3px solid #007bff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.audio-info-label {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+}
+
+.audio-info-value {
+    color: #212529;
+    font-weight: 500;
+}
+
+/* Reproductor mejorado para el admin */
+.audio-player-admin {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.audio-player-admin audio {
+    width: 100%;
+    max-width: 500px;
+    height: 40px;
+    border-radius: 20px;
+    background: #f8f9fa;
+    outline: none;
+}
+
+.audio-file-info {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #6c757d;
+    border-left: 3px solid #28a745;
+}
+
+.audio-file-info a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.audio-file-info a:hover {
+    text-decoration: underline;
+}
+
+/* Botones de acción mejorados */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid #dee2e6;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.action-btn-download {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.action-btn-download:hover {
+    background: #007bff;
+    color: white;
+}
+
+.action-btn-process {
+    color: #ffc107;
+    border-color: #ffc107;
+}
+
+.action-btn-completed {
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.action-btn-error {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Mejoras para los fieldsets */
+.fieldset-audio {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    background: #fdfdfd;
+}
+
+.fieldset-audio legend {
+    background: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Estilos para los filtros */
+#changelist-filter h3 {
+    color: #495057;
+    font-weight: 600;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+#changelist-filter li.selected a {
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+/* Mejoras para la búsqueda */
+#changelist-search input[type="text"] {
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+#changelist-search input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .audio-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .audio-player-container audio {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+    }
+}
+
+/* Animaciones suaves */
+.change-list table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.change-list table tbody tr:hover {
+    background-color: rgba(0,123,255,0.05);
+}
+
+/* Estilos para mensajes de éxito/error */
+.messagelist .success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    border-color: #28a745;
+    color: #155724;
+}
+
+.messagelist .error {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    border-color: #dc3545;
+    color: #721c24;
+}
+
+/* Loading spinner para procesamiento */
+.processing-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

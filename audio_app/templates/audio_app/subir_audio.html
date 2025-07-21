@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedVoice Pro - Subir Audio Médico</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span class="medical-icon">🏥</span>
+                MedVoice Pro
+            </h1>
+            <p>Subir Audio para Diagnóstico Médico</p>
+            <div class="subtitle">Carga tu archivo de audio médico para análisis con IA</div>
+        </div>
+
+        <div class="main-section">
+            <form id="audioForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="titulo">Identificación del Caso Clínico</label>
+                    <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Ej: Paciente 001 - Consulta inicial - Dr. González" required>
+                </div>
+
+                <div class="recording-controls">
+                    <!-- Sección de Grabación -->
+                    <div class="record-section">
+                        <div class="section-title">
+                            <span>🎙️</span>
+                            Grabación de Audio
+                        </div>
+                        
+                        <button type="button" id="recordButton" class="record-button">
+                            <span id="recordIcon">🎤</span>
+                        </button>
+                        
+                        <div class="record-status" id="recordStatus">Presiona para comenzar grabación</div>
+                        <div class="timer" id="timer">00:00</div>
+                        
+                        <div class="audio-visualizer" id="visualizer" style="display: none;">
+                            <div class="wave" id="wave"></div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; display: none;" id="recordControls">
+                            <button type="button" class="btn btn-danger" id="stopButton">
+                                ⏹️ Detener Grabación
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Carga de Archivo -->
+                    <div class="upload-section">
+                        <div class="section-title">
+                            <span>📁</span>
+                            Cargar Archivo Existente
+                        </div>
+                        
+                        <div class="upload-area" id="uploadArea">
+                            <span class="upload-icon">🎵</span>
+                            <div class="upload-text">Arrastra tu archivo de audio médico aquí</div>
+                            <div class="upload-subtext">o haz clic para seleccionar (MP3, WAV, OGG, M4A, AAC)</div>
+                            <input type="file" id="audioFile" name="archivo_audio" accept="audio/*">
+                        </div>
+
+                        <div class="file-info" id="fileInfo">
+                            <h4>Información del archivo:</h4>
+                            <div class="file-details" id="fileDetails"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button type="submit" class="btn" id="submitBtn">
+                        <span id="btnText">🔍 Analizar Audio Médico</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>Procesando análisis médico...</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 MedVoice Pro. Todos los derechos reservados.</p>
+            <p>Desarrollado por [Grupo 7] - IA y Salud</p>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
