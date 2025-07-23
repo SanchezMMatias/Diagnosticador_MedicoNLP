@@ -1,0 +1,378 @@
+/* Reset básico */
+body, h1, h2, h3, p, ul, li, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f8fc;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+.header h1 {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.medical-icon {
+    margin-right: 10px;
+}
+
+.ai-badge {
+    background: #3f51b5;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+.header-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+.case-info {
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.case-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.case-title {
+    color: #0077cc;
+    margin-left: 5px;
+}
+
+/* Audio Section */
+.audio-section {
+    margin-top: 30px;
+}
+
+.section-header h2 {
+    font-size: 1.4rem;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.audio-player {
+    background: #eef2f7;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.audio-info {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #444;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Botones */
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+.btn-analyze {
+    background: #4caf50;
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+    position: relative;
+}
+
+.btn-analyze:hover {
+    background: #45a047;
+}
+
+.btn-loader {
+    width: 16px;
+    height: 16px;
+    border: 2px solid white;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+    margin: 5px;
+}
+
+.btn-secondary:hover {
+    background: #d5d5d5;
+}
+
+.btn-primary {
+    background: #1976d2;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1565c0;
+}
+
+/* Opciones */
+.analysis-options {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.option-checkbox {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.option-checkbox input {
+    position: absolute;
+    opacity: 0;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    height: 16px;
+    width: 16px;
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.option-checkbox input:checked ~ .checkmark {
+    background-color: #4caf50;
+}
+
+/* Result Cards */
+.results-container {
+    margin-top: 40px;
+}
+
+.result-card {
+    background: #f9fbff;
+    border: 1px solid #dce4f0;
+    border-left: 6px solid #1976d2;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.confidence-badge {
+    background: #e0f2f1;
+    color: #00695c;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.transcription-text, .diagnostic-summary, .emotion-summary {
+    background: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    border: 1px solid #ddd;
+}
+
+.transcription-actions, .diagnostic-details, .recommendations {
+    margin-top: 15px;
+}
+
+.recommendations ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+/* Skeleton loading */
+.loading-placeholder .skeleton-line {
+    background-color: #ddd;
+    height: 12px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite;
+}
+
+.loading-placeholder .short {
+    width: 50%;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Progress bar */
+.progress-container {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f0f4f8;
+    border-radius: 10px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+}
+
+.progress-fill {
+    background: #2196f3;
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+}
+
+.progress-status {
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Footer */
+.footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* --- Emotions Chart --- */
+.emotion-bar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.emotion-label {
+    width: 100px;
+    font-weight: bold;
+}
+
+.emotion-bar-wrapper {
+    flex: 1;
+    background: #e0e0e0;
+    height: 18px;
+    border-radius: 10px;
+    margin: 0 10px;
+    overflow: hidden;
+}
+
+.emotion-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.emotion-value {
+    width: 60px;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+/* --- Notificaciones --- */
+.notification {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2196f3;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    font-size: 0.95rem;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.notification.show {
+    top: 20px;
+    opacity: 1;
+}
+
+.notification.success { background-color: #4caf50; }
+.notification.error   { background-color: #f44336; }
+.notification.warning { background-color: #ff9800; }
+.notification.info    { background-color: #2196f3; }
+
+/* --- Skeleton (loading placeholders) --- */
+.skeleton-line {
+    height: 12px;
+    background-color: #ddd;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite;
+}
+
+.skeleton-line.short {
+    width: 60%;
+}
+
+@keyframes pulse {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.5; }
+    100% { opacity: 1; }
+}

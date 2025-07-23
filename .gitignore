@@ -22,3 +22,8 @@ media/
 
 # MacOS
 .DS_Store
+
+*.safetensors
+*.pth
+
+

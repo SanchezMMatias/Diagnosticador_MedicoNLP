@@ -18,7 +18,8 @@
         </div>
 
         <div class="main-section">
-            <form id="audioForm" enctype="multipart/form-data">
+            <!-- OPCIÓN A: Usar la URL correcta según tus URLs -->
+            <form id="audioForm" method="post" action="{% url 'audio_app:subir_audio' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="titulo">Identificación del Caso Clínico</label>
@@ -88,6 +89,7 @@
         <div class="footer">
             <p>&copy; 2025 MedVoice Pro. Todos los derechos reservados.</p>
             <p>Desarrollado por [Grupo 7] - IA y Salud</p>
+        </div>
     </div>
 
     <script src="/static/script.js"></script>

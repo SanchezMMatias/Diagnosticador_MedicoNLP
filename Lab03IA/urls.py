@@ -1,17 +1,17 @@
-# Lab03IA/urls.py (principal del proyecto)
+# Lab03IA/urls.py
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from audio_app.views import subir_audio_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # ← ADMIN PRIMERO
-    path('', subir_audio_view, name='home'),
+    path('admin/', admin.site.urls),
     path('audio/', include('audio_app.urls')),
+    path('diagnosticos/', include('diagnosticos_app.urls')),
+    path('', include('audio_app.urls')),  # Página principal desde audio_app
 ]
 
-# Configuración de archivos estáticos y media - AL FINAL
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

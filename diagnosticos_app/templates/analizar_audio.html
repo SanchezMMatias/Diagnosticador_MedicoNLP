@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Audio - {{ audio.titulo }}</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        .analisis-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .audio-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .transcripcion-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .diagnostico-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #17a2b8;
+        }
+        .btn-procesar {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .btn-procesar:hover {
+            background: #0056b3;
+        }
+        .btn-procesar:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .transcripcion-resultado {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+        .diagnostico-resultado {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #dc3545;
+            margin-top: 15px;
+        }
+        .diagnostico-original {
+            font-size: 0.9em;
+            color: #6c757d;
+            font-style: italic;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🩺 Análisis de Audio Médico</h1>
+            <p>Transcripción y diagnóstico con IA</p>
+        </div>
+
+        <div class="analisis-container">
+            <!-- Información del audio -->
+            <div class="audio-info">
+                <h2>📁 Información del Audio</h2>
+                <div><strong>Título:</strong> {{ audio.titulo }}</div>
+                <div><strong>Archivo:</strong> {{ audio.nombre_original }}</div>
+                <div><strong>Formato:</strong> {{ audio.formato_audio|upper }}</div>
+                <div><strong>Tamaño:</strong> {{ audio.get_tamaño_formateado }}</div>
+                <div><strong>Duración:</strong> {{ audio.get_duracion_formateada }}</div>
+                <div><strong>Fecha de subida:</strong> {{ audio.fecha_subida|date:"d/m/Y H:i" }}</div>
+                {% if audio.doctor %}<div><strong>Doctor:</strong> {{ audio.doctor }}</div>{% endif %}
+                {% if audio.paciente_id %}<div><strong>Paciente ID:</strong> {{ audio.paciente_id }}</div>{% endif %}
+            </div>
+
+            <!-- Reproductor de audio -->
+            <div class="transcripcion-section">
+                <h3>🎵 Reproductor</h3>
+                <audio controls style="width: 100%; margin-bottom: 20px;">
+                    <source src="{{ audio.archivo_audio.url }}" type="audio/{{ audio.formato_audio }}">
+                    Tu navegador no soporta el elemento de audio.
+                </audio>
+            </div>
+
+            <!-- Sección de transcripción -->
+            <div class="transcripcion-section">
+                <h3>📝 Transcripción</h3>
+                
+                {% if diagnostico and diagnostico.transcripcion %}
+                    <div class="transcripcion-resultado">
+                        <h4>Transcripción existente:</h4>
+                        <p>{{ diagnostico.transcripcion }}</p>
+                        <small><em>Estado: {{ diagnostico.get_estado_display }} | 
+                        Fecha: {{ diagnostico.fecha_creacion|date:"d/m/Y H:i" }}</em></small>
+                    </div>
+                    <button type="button" class="btn-procesar" onclick="procesarAudio()">
+                        🔄 Reanalizar Audio
+                    </button>
+                {% else %}
+                    <p>No se ha procesado este audio todavía.</p>
+                    <button type="button" class="btn-procesar" onclick="procesarAudio()">
+                        🎤 Procesar Audio con IA
+                    </button>
+                {% endif %}
+
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <p>🧠 Procesando con inteligencia artificial... Esto puede tomar unos minutos.</p>
+                </div>
+
+                <div id="resultado-transcripcion"></div>
+            </div>
+
+            <!-- Sección de diagnóstico (nueva) -->
+            <div class="diagnostico-section" id="seccion-diagnostico" style="display: none;">
+                <h3>🔍 Diagnóstico Médico</h3>
+                <div id="resultado-diagnostico"></div>
+            </div>
+
+            <!-- Acciones -->
+            <div id="acciones-resultado" style="display: none; text-align: center;">
+                <button type="button" class="btn-procesar" onclick="guardarResultados()">
+                    💾 Guardar Resultados
+                </button>
+                <button type="button" class="btn-procesar" style="background: #6c757d;" onclick="cancelarResultados()">
+                    ❌ Cancelar
+                </button>
+            </div>
+
+            <!-- Navegación -->
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="/audio/lista/" class="btn-procesar" style="text-decoration: none; display: inline-block;">
+                    ⬅️ Volver a Lista de Audios
+                </a>
+                <a href="/audio/detalle/{{ audio.id }}/" class="btn-procesar" style="text-decoration: none; display: inline-block;">
+                    📄 Ver Detalles
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let transcripcionTemporal = '';
+        let diagnosticoEnTemporal = '';
+        let diagnosticoEsTemporal = '';
+
+        async function procesarAudio() {
+            const loading = document.getElementById('loading');
+            const resultadoDiv = document.getElementById('resultado-transcripcion');
+            const diagnosticoDiv = document.getElementById('resultado-diagnostico');
+            const seccionDiagnostico = document.getElementById('seccion-diagnostico');
+            const accionesDiv = document.getElementById('acciones-resultado');
+            const btnProcesar = document.querySelector('.btn-procesar');
+
+            // Resetear estado
+            btnProcesar.disabled = true;
+            loading.style.display = 'block';
+            resultadoDiv.innerHTML = '';
+            diagnosticoDiv.innerHTML = '';
+            seccionDiagnostico.style.display = 'none';
+            accionesDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/diagnosticos/procesar-audio/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({
+                        'audio_id': {{ audio.id }}
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Guardar datos temporales
+                    transcripcionTemporal = data.transcripcion;
+                    diagnosticoEnTemporal = data.diagnostico_en || '';
+                    diagnosticoEsTemporal = data.diagnostico_es || '';
+
+                    // Mostrar transcripción
+                    resultadoDiv.innerHTML = `
+                        <div class="transcripcion-resultado">
+                            <h4>✅ Transcripción completada:</h4>
+                            <p>${data.transcripcion}</p>
+                        </div>
+                    `;
+
+                    // Mostrar diagnóstico si existe
+                    if (data.diagnostico_es) {
+                        seccionDiagnostico.style.display = 'block';
+                        diagnosticoDiv.innerHTML = `
+                            <div class="diagnostico-resultado">
+                                <h4>Diagnóstico:</h4>
+                                <p>${data.diagnostico_es}</p>
+                                <div class="diagnostico-original">Versión original: ${data.diagnostico_en}</div>
+                            </div>
+                        `;
+                    }
+
+                    // Mostrar botones de acción
+                    accionesDiv.style.display = 'block';
+                } else {
+                    resultadoDiv.innerHTML = `
+                        <div class="error">
+                            ❌ Error: ${data.error}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultadoDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Error de conexión: ${error.message}
+                    </div>
+                `;
+            }
+
+            loading.style.display = 'none';
+            btnProcesar.disabled = false;
+        }
+
+        async function guardarResultados() {
+            if (!transcripcionTemporal) {
+                alert('No hay resultados para guardar');
+                return;
+            }
+
+            try {
+                const response = await fetch('/diagnosticos/guardar-resultados/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({
+                        'audio_id': {{ audio.id }},
+                        'transcripcion': transcripcionTemporal,
+                        'diagnostico_en': diagnosticoEnTemporal,
+                        'diagnostico_es': diagnosticoEsTemporal
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ Resultados guardados correctamente');
+                    location.reload(); // Recargar para mostrar los resultados guardados
+                } else {
+                    alert('❌ Error al guardar: ' + data.error);
+                }
+            } catch (error) {
+                alert('❌ Error de conexión: ' + error.message);
+            }
+        }
+
+        function cancelarResultados() {
+            document.getElementById('resultado-transcripcion').innerHTML = '';
+            document.getElementById('resultado-diagnostico').innerHTML = '';
+            document.getElementById('seccion-diagnostico').style.display = 'none';
+            document.getElementById('acciones-resultado').style.display = 'none';
+            transcripcionTemporal = '';
+            diagnosticoEnTemporal = '';
+            diagnosticoEsTemporal = '';
+        }
+
+        function getCsrfToken() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrftoken') {
+                    return value;
+                }
+            }
+            return '';
+        }
+    </script>
+</body>
+</html>

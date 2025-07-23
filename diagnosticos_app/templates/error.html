@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Sistema de Diagnósticos Médicos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-container {
+            max-width: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .error-title {
+            color: #2d3748;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            color: #4a5568;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .error-details {
+            background: #f7fafc;
+            border-left: 4px solid #e53e3e;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 5px;
+        }
+
+        .error-details h4 {
+            color: #e53e3e;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .error-details p {
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .error-code {
+            font-family: 'Courier New', monospace;
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: 2px solid #cbd5e0;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        .help-text {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .help-text a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .help-text a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .error-container {
+                margin: 10px;
+                padding: 30px 20px;
+            }
+
+            .error-title {
+                font-size: 1.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                justify-content: center;
+            }
+        }
+
+        .retry-section {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .retry-section h4 {
+            color: #22543d;
+            margin-bottom: 10px;
+        }
+
+        .retry-section ul {
+            color: #2f855a;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .retry-section li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">⚠️</div>
+        
+        <h1 class="error-title">¡Oops! Algo salió mal</h1>
+        
+        <p class="error-message">
+            {{ error_message|default:"Ha ocurrido un error inesperado al procesar tu solicitud." }}
+        </p>
+
+        {% if error_type %}
+        <div class="error-details">
+            <h4>Detalles del Error:</h4>
+            <p><strong>Tipo:</strong> <span class="error-code">{{ error_type }}</span></p>
+            {% if error_detail %}
+            <p><strong>Descripción:</strong> {{ error_detail }}</p>
+            {% endif %}
+            {% if timestamp %}
+            <p><strong>Hora:</strong> {{ timestamp }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="retry-section">
+            <h4>💡 Posibles soluciones:</h4>
+            <ul>
+                <li>Verifica que el archivo de audio sea válido</li>
+                <li>Asegúrate de que el audio no esté corrupto</li>
+                <li>Intenta con un archivo más pequeño</li>
+                <li>Verifica tu conexión a internet</li>
+                <li>Espera unos minutos y vuelve a intentar</li>
+            </ul>
+        </div>
+
+        <div class="action-buttons">
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                ← Volver
+            </a>
+            
+            {% if audio_id %}
+            <a href="{% url 'diagnosticos_app:analizar_audio' audio_id %}" class="btn btn-primary">
+                🔄 Reintentar
+            </a>
+            {% endif %}
+            
+            <a href="{% url 'audio_app:lista_audios' %}" class="btn btn-primary">
+                📋 Ver Lista de Audios
+            </a>
+        </div>
+
+        <div class="help-text">
+            <p>Si el problema persiste, por favor contacta al administrador del sistema.</p>
+            <p>Código de error: <span class="error-code">{{ request.GET.error_code|default:"UNKNOWN" }}</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Auto refresh después de 30 segundos si hay un audio_id
+        {% if audio_id and auto_retry %}
+        setTimeout(function() {
+            if (confirm('¿Quieres reintentar automáticamente?')) {
+                window.location.href = "{% url 'diagnosticos_app:analizar_audio' audio_id %}";
+            }
+        }, 30000);
+        {% endif %}
+
+        // Función para reportar error (opcional)
+        function reportError() {
+            const errorData = {
+                error_type: '{{ error_type|default:"" }}',
+                error_message: '{{ error_message|default:"" }}',
+                url: window.location.href,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Error reportado:', errorData);
+            // Aquí puedes enviar el error a tu sistema de logging
+        }
+
+        // Reportar error automáticamente
+        document.addEventListener('DOMContentLoaded', function() {
+            reportError();
+        });
+    </script>
+</body>
+</html>
